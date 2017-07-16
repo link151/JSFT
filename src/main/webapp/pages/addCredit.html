@@ -1,0 +1,168 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar" ng-init="tab.activeTab=1">
+                <li><label>信用证开立</label></li>
+                <li id="inputCreditNavSidebar" class="active"><a href="#/addCredit">录入信用证</a></li>
+                <li id="listCreditNavSidebarCheck" ng-hide="role=='Y'"><a href="#/listCheckCredit" ng-click="listAllCheckBill()">已审批信用证</a></li>
+                <li id="listCreditNavSidebarUnCheck" ng-hide="role=='Y' || role=='B'"><a href="#/listUnCheckCredit" ng-click="listAllUnCheckBill()">未审批信用证</a></li>
+                <li id="listCreditNavSidebarCheck" ng-show="role=='Y'"><a href="#/listCheckCreditY" ng-click="listAllCheckBill()">本部已审批信用证</a></li>
+                <li id="listCreditNavSidebarUnCheck" ng-show="role=='Y'"><a href="#/listUnCheckCreditY" ng-click="listAllUnCheckBill()">本部未审批信用证</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!--录用信用证表单-->
+            <div class="container" style="width: 100%;">
+                <h1>录入信用证</h1>
+                <form ng-submit="addBill()" id="inputCreditForm" class="form-horizontalm" role="form">
+                    <div class="panel panel-default">
+                        <div class="panel-body row">
+                            <div id="inputBankDiv" class="form-group col-md-6">
+                                <label for="inputBank" class="col-sm-4 control-label">开证银行</label>
+                                <div class="col-sm-8">
+                                    <select ng-model="bill.bank" id="inputBank" class="form-control" required="required" >
+                                        <option value="0">请选择开证银行</option>
+                                        
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="inputDepartDiv" class="form-group col-md-6">
+                                <label for="inputDepart" class="col-sm-4 control-label">部&nbsp;&nbsp;&nbsp;&nbsp;门</label>
+                                <div class="col-sm-8" id="inputDepartA">
+                                    <select ng-model="bill.dept" id="inputDepart" class="form-control" required="required">
+                                        <option value="0" ng-selected="selected">请选择部门</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-8" id="inputDepartY">
+                                    <input type="text" class="form-control" ng-model="bill.dept" id="inputDepart2" required="required" readonly>
+                                </div>
+                            </div>
+                            <div id="inputCommodityDiv" class="form-group col-md-6">
+                                <label for="inputCommodity" class="col-sm-4 control-label">商品类型</label>
+                                <div class="col-sm-8">
+                                    <input ng-model="bill.goods" type="text" class="form-control" id="inputCommodity" placeholder="请输入商品类型" required="required">
+                                </div>
+                            </div>
+                            <div id="inputContractNoDiv" class="form-group col-md-6">
+                                <label for="inputContractNo" class="col-sm-4 control-label">合同号</label>
+                                <div class="col-sm-8">
+                                    <input ng-model="bill.contractid" type="text" class="form-control" id="inputContractNo" placeholder="请输入合同号" required="required">
+                                </div>
+                            </div>
+                            <div id="inputNatureDiv" class="form-group col-md-6">
+                                <label for="inputNature" class="col-sm-4 control-label">性质</label>
+                                <div class="col-sm-8">
+                                    <select ng-model="bill.attribute" id="inputNature" class="form-control" required="required">
+                                        <option value="0">请选择性质</option>
+                                        <option value="自营">自营</option>
+                                        <option value="代理">代理</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="inputCustomerDiv" class="form-group col-md-6">
+                                <label for="inputCustomer" class="col-sm-4 control-label">代理客户</label>
+                                <div class="col-sm-8">
+                                    <input ng-model="bill.proxyclient" type="text" class="form-control" id="inputCustomer" 
+                                    	placeholder="请输入代理客户">
+                                </div>
+                            </div>
+                            <div id="inputCurrencyDiv" class="form-group col-md-6">
+                                <label for="inputCurrency" class="col-sm-4 control-label">货币种类</label>
+                                <div class="col-sm-8">
+                                    <select ng-model="bill.currency" id="inputCurrency" class="form-control" required="required">
+                                        <option value="0" selected="selected">请选择货币种类</option>
+                                        <option value="人民币CNY">人民币CNY</option>
+                                        <option value="美元USD">美元USD</option>
+                                        <option value="欧元EUR">欧元EUR</option>
+                                        <option value="日元JPY">日元JPY</option>
+                                        <option value="加拿大元CAD">加拿大元CAD</option>
+                                        <option value="新加坡元SGD">新加坡元SGD</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="inputSumDiv" class="form-group col-md-6">
+                                <label for="inputSum" class="col-sm-4 control-label">开证金额</label>
+                                <div class="col-sm-8">
+                                    <input ng-model="bill.crtamount" type="text" class="form-control" id="inputSum" 
+                                    	placeholder="请输入开证金额" required="required" ng-change = "changeSum()">
+                                </div>
+                            </div>
+                            
+                            <div id="inputDateDiv" class="form-group col-md-6">
+                                <label for="inputDate" class="col-sm-4 control-label">开证日期</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group date form_date" data-date="" data-date-format="yyyy/mm/dd" data-link-field="inputDate" data-link-format="yyyy/mm/dd">
+                                        <input id="inputDateText" class="form-control" size="16" type="text" value="" readonly required="required" ng-model="bill.crtdate">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                    <input type="hidden" id="inputDate" value="" /><br/>
+                                </div>
+                            </div>
+
+                            <div id="inputTimeDiv" class="form-group col-md-6">
+                                <label for="inputTime" class="col-sm-4 control-label">开证期限</label>
+                                <div class="col-sm-8">
+                                    <input ng-model="bill.crtdeadline" type="number" class="form-control" id="inputTime" placeholder="请输入开证期限" required="required">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-offset-4 col-md-4" id="submitBtn">
+                                <button type="submit" class="btn btn-success btn-block btn-lg" >确定</button>
+                            </div>
+                            <div class="form-group col-md-offset-4 col-md-4">
+                                <div id="creditSucMsg" class="alert alert-success alert-dismissible" style="display: none" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <strong id="creditNoSucMsg">信用证已开立!</strong>
+                                </div>
+                                <div id="creditErrMsg" class="alert alert-danger" style="display: none" role="alert"><strong>请将表格信息填写完整,否则无法提交!</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--信用证查询页面-->
+            <form></form>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var countSubmit = 0;
+    sessionStorage.countSubmit = countSubmit;
+
+    $(document).ready(function(){
+        $('#inputDate').val(getNowFormatDate());
+        $('#inputDateText').val(getNowFormatDate());
+    });
+
+     function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "/";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
+
+
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+</script>

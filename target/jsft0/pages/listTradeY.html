@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="css/dashboard.css" type="text/css" rel="stylesheet">
+    <link href="css/bootstrap-table.min.css" type="text/css" rel="stylesheet">
+    <link href="css/jsft.css" type="text/css" rel="stylesheet">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table-zh-CN.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table-filter-control.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/jsft.js"></script>
+</head>
+<body class="background">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+             <ul class="nav nav-sidebar">
+                <li><label>信用证押汇</label></li>
+                <li id="inputTradeNavSidebarA" ng-hide="role != 'A'" ><a href="#/addTradeApplyA">财务部押汇</a></li>
+                <li id="inputTradeNavSidebarY" ng-hide="role != 'Y'"><a href="#/addTradeApplyY">业务部押汇</a></li>
+                <li id="listTradeA" ng-hide="role == 'Y'" ><a href="#/listTradeA">查看所有押汇</a></li>
+                <li id="listTradeY" ng-hide="role != 'Y'" class="active"><a href="#/listTradeY">查看本部押汇</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!--信用证查询页面-->
+            <h1>查看押汇信息</h1>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="toolbar" class="btn-group">
+                        <div class="row">
+                        	<div class="col-md-3">
+                                <a type="button" class="btn btn-danger" style="width: 60px" id="printDraftBtn"  
+                                	ng-href="{{printUrlY}}" ng-click="printDraftY()" onmouseover="printY()">预览</a>
+                            </div>
+                            <div class="col-md-3">
+                                <button type="button" class="btn btn-success" style="width: 60px" id="exchangeBtn" data-toggle="modal" 
+                                data-target="#setExchange" onclick="setExchange()">锁汇</button>
+                            </div>
+                            <!--Modal-->
+                            <div class="modal fade" id="setExchange" tabindex="-1" role="dialog" aria-labelledby="exTitle" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关</span></button>
+                                            <h4 class="modal-title" id="exTitle">请输入锁汇信息</h4>
+                                        </div>
+                                        <div id="inputExContractIdDiv" class="form-group col-sm-10 col-sm-offset-1">
+                                       		<label for="inputExContractId" class="col-sm-3 control-label">合同号</label>
+                                       		<div class="col-sm-9">
+                                                   <input type="text" class="form-control" id="inputExContractId" ng-model="contractid">
+                                               </div>
+                                       	</div>
+                                        <form class="modal-body row" role="form" onsubmit="return ">
+                                            <div id="inputExSumDiv" class="form-group col-sm-10 col-sm-offset-1">
+                                                <label for="inputExSum" class="col-sm-3 control-label">锁汇金额</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="inputExSum" placeholder="请输入锁汇金额">
+                                                </div>
+                                            </div>
+                                            <div id="inputExRateDiv" class="form-group col-sm-10 col-sm-offset-1">
+                                                <label for="inputExRate" class="col-sm-3 control-label">锁汇汇率</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="inputExRate" placeholder="请输入锁汇汇率">
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            <button type="submit" class="btn btn-success" id="exchangeSubmit" ng-click="updateDraftLockByContractId()"  data-dismiss="modal">保存</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <a type="button" class="btn btn-primary" style="width: 60px" id="editTradeBtn"  data-toggle="modal" 
+                                data-target="#setExchange2" data-backdrop="static" data-keyboard="false" onclick="setExchange2()">补充</a>
+                            </div>
+                            
+                            <!--Modal-->
+                            <div class="modal fade" id="setExchange2" tabindex="-1" role="dialog" aria-labelledby="exTitle" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关</span></button>
+                                            <h4 class="modal-title" id="exTitle">请输入补充信息</h4>
+                                        </div>
+                                        <div id="inputExContractIdDiv" class="form-group col-sm-10 col-sm-offset-1">
+                                       		<label for="inputExContractId" class="col-sm-3 col-sm-3 control-label">合同号</label>
+                                       		<div class="col-sm-9">
+                                                <input type="text" class="form-control" id="inputExContractId2" ng-model="contractid">
+                                            </div>
+                                       	</div>
+                                        <form class="modal-body row" role="form" onsubmit="return ">
+                                            <div id="inputCertificateDiv" class="form-group col-sm-10 col-sm-offset-1">
+				                                <label for="inputCertificate" class="col-sm-3 col-sm-3 control-label">凭证号</label>
+				                                <div class="col-sm-9">
+				                                    <input type="text" class="form-control" id="inputCertificate" placeholder="请输入凭证号">
+				                                </div>
+				                            </div>
+				                            <div id="inputTradeSumDiv" class="form-group col-sm-10 col-sm-offset-1">
+				                                <label for="inputTradeSum" class="col-sm-4 col-sm-3 control-label">押汇金额</label>
+				                                <div class="col-sm-9">
+				                                    <input type="text" class="form-control" id="inputTradeSum" 
+				                                    	placeholder="请输入押汇金额"> ng-change = "changeTradeSum()"
+				                                </div>
+				                            </div>
+				                            <div id="inputTradeRMBDiv" class="form-group col-sm-10 col-sm-offset-1">
+				                                <label for="inputTradeRMB" class="col-sm-4 col-sm-3 control-label">折人民币</label>
+				                                <div class="col-sm-9">
+				                                    <input type="text" class="form-control" id="inputTradeRMB" placeholder="折人民币/元">
+				                                </div>
+				                            </div>
+				                            <div id="loanDateDiv" class="form-group col-sm-10 col-sm-offset-1">
+				                                <label for="loanDate" class="  col-sm-3 control-label">贷款日</label>
+				                                <div class="col-sm-9">
+				                                	<div class="input-group date form_date" data-date="" data-date-format="yyyy/mm/dd" data-link-field="loanDate" data-link-format="yyyy/mm/dd">
+				                                        <input id="loanDateText" class="form-control" size="16" type="text" value="" readonly required="required">
+				                                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				                                    </div>
+				                                    <input class="form-control" id="loanDate" placeholder="" type="hidden">
+				                                </div>
+				                            </div>
+				                            <div id="refundDateDiv" class="form-group col-sm-10 col-sm-offset-1">
+				                                <label for="refundDate" class="  col-sm-3 control-label">还款日</label>
+				                                <div class="col-sm-9">
+				                                	<div class="input-group date form_date" data-date="" data-date-format="yyyy/mm/dd" data-link-field="refundDate" data-link-format="yyyy/mm/dd">
+				                                        <input id="refundDateText" class="form-control" size="16" type="text" value="" readonly required="required">
+				                                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+				                                    </div>
+				                                    <input class="form-control" id="refundDate" placeholder="请输入还款日" type="hidden">
+				                                </div>
+				                            </div>
+				                           <!--  <div id="inputExSumDiv2" class="form-group col-sm-10 col-sm-offset-1">
+                                                <label for="inputExSum" class="col-sm-3 control-label">锁汇金额</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="inputExSum2" placeholder="请输入锁汇金额">
+                                                </div>
+                                            </div>
+                                            <div id="inputExRateDiv2" class="form-group col-sm-10 col-sm-offset-1">
+                                                <label for="inputExRate" class="col-sm-3 control-label">锁汇汇率</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="inputExRate2" placeholder="请输入锁汇汇率">
+                                                </div>
+                                            </div> -->
+                                        </form>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            <button type="submit" class="btn btn-success" id="exchangeSubmit" data-dismiss="modal" ng-click="updateDraftByContractIdSupple()">保存</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                               <button type="button" class="btn btn-warning" style="width: 60px" 
+                                ng-click="exportBillStateById()">导出</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table id="table" data-filter-control="true">
+                        <thead>
+                        <tr>
+                            <th data-checkbox="true"></th>
+                            <th data-field="id" data-sortable="true">序号</th>
+                            <th data-field="bank" data-sortable="true" data-editable="true" data-filter-control="select">开证银行</th>
+                            <th data-field="certificate" data-sortable="true" data-editable="true" data-filter-control="input">凭证号</th>
+                            <th data-field="currency" data-sortable="true" data-editable="true" data-filter-control="select">币种</th>
+                            <th data-field="draftamount" data-sortable="true" data-editable="true">押汇金额</th>
+                            <th data-field="rmb" data-sortable="true" data-editable="true">折人民币元</th>
+                            <th data-field="loandate" data-sortable="true" data-editable="true">贷款日</th>
+                            <th data-field="refunddate" data-sortable="true" data-editable="true">还款日</th>
+                            <th data-field="draftrate" data-sortable="true" data-editable="true">押汇利率</th>
+                            <th data-field="contractid" data-sortable="true" data-editable="true" data-filter-control="input">合同号</th>
+                            <th data-field="lockamount" data-sortable="true" data-editable="true">锁汇金额</th>
+                            <th data-field="lockrate" data-sortable="true" data-editable="true">锁汇汇率</th>
+                        </tr>
+                        </thead>
+                   </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+   /* function setExchangeBtn() {
+        var selected = $('#table').bootstrapTable('getSelections');
+        alert(selected);
+        var exchangeSum = $.map(selected,function (row) {
+            return row.exchangeSum;
+        });
+        if (exchangeSum==''){
+            $('#exchangeBtn').attr("disabled","true");
+        }
+
+    }*/
+	$(function(){
+		var deptId = $('#hid_deptId').val();
+		//alert("deptId:" + deptId);
+		$('#table').bootstrapTable({
+			url: 'listDraftByDeptOrderByBank/'+deptId+'.do',
+			method: 'get',
+			toolbar: '#toolbar',
+			striped: true,
+			pagination: true,
+			sortable: true,
+			pageSize: 100,
+			pageList: [10, 15, 25, 50, 100],
+			search: true,
+			showRefresh: true,
+			showToggle: true,
+			clickToSelect: true,
+			showColumns: true,
+			singleSelect: true,
+		});
+		$('#table').bootstrapTable('hideColumn', 'id');
+	});
+    
+    /* queryParams = function(params){
+    	var temp ={
+    			dept: $.cookie('user').dept
+    	};
+    	return temp;
+    } */
+    
+    function submitExchange() {
+        var exSum = $('#inputExSum').val();
+        var exRate = $('#inputExRate').val();
+
+        if (exSum==''||exRate==''||!checkMoney(exSum)||!checkRate(exRate)){
+            alert("请输入正确信息,否则无法保存!")
+
+            if (exSum==''){
+                $('#inputExSumDiv').addClass("has-error");
+            }else if (checkMoney(exSum)){
+                $('#inputExSum').val(exSum);
+            }else {
+                $('#inputExSumDiv').addClass("has-error");
+            }
+
+            if (exRate==''){
+                $('#inputExRateDiv').addClass("has-error");
+            }else if (checkRate(exRate)){
+                $('#inputExRate').val(exRate);
+            }else {
+                $('#inputExRateDiv').addClass("has-error");
+            }
+
+        } else {
+            alert("锁汇信息输入成功!")
+        }
+    }
+    
+    function setExchange(){
+    	var rows = $('#table').bootstrapTable('getSelections');
+    	if(rows == ''){
+    		alert("请先选择一条要押汇信息再锁汇");
+    		$('#exchangeBtn').attr('data-target', '');
+    	}else if(rows[0].state == "已锁汇"){
+    		alert("该录入信息已锁汇");
+    		$('#exchangeBtn').attr('data-target', '');
+    	}
+    	else{
+    		$('#exchangeBtn').attr('data-target', '#setExchange');
+    		row = rows[0];
+    		$('#inputExContractId').val(row.contractid);
+    		$('#id').val("");
+    		$('#id').val(row.id);
+    	}
+    }
+    function setExchange2(){
+    	var rows = $('#table').bootstrapTable('getSelections');
+    	if(rows == ''){
+    		alert("请先选择一条押汇信息再补充");
+    		$('#editTradeBtn').attr('data-target', '');
+    	}else{
+    		$('#editTradeBtn').attr('data-target', '#setExchange2');
+    		row = rows[0];
+    		$('#inputExContractId2').val(row.contractid);
+    		$('#loanDateText').val(row.loandate);
+    		$('#id').val("");
+    		$('#id').val(row.id);
+    	}
+    }
+    
+    function printY(){
+    	var rows = $('#table').bootstrapTable('getSelections');
+    	var length = rows.length;
+    	if(rows != '' && length==1){
+    		bill = rows[0];
+    		var id=bill.id;
+    		$('#id').val("");
+    		$('#id').val(id);
+    	}
+    }
+    
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "/";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
+    
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.link.mapper.CreateAcceptMapper">
+	<resultMap type="com.cn.link.model.CreateAccept" id="BaseResultMap">
+		<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="contractId" jdbcType="CHAR" property="contractid"/>
+		<result column="bank" jdbcType="CHAR" property="bank"/>
+		<result column="currency" jdbcType="CHAR" property="currency"/>
+		<result column="payAmount" jdbcType="CHAR" property="payamount"/>
+		<result column="days" jdbcType="INTEGER" property="days"/>
+		<result column="week" jdbcType="CHAR" property="week"/>
+		<result column="payDate" jdbcType="CHAR" property="paydate"/>
+		<result column="registerDate" jdbcType="CHAR" property="registerdate"/>
+		<result column="lockAmount" jdbcType="CHAR" property="lockamount"/>
+		<result column="lockRate" jdbcType="CHAR" property="lockrate"/>
+		<result column="state" jdbcType="CHAR" property="state"/>
+	</resultMap>
+	<resultMap id="BaseResultMap2" type="com.cn.link.model.CreateBill">
+    	<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="contractId" jdbcType="CHAR" property="contractid"/>
+    	<result column="bank" jdbcType="CHAR" property="bank" />
+    	<result column="dept" jdbcType="CHAR" property="dept" />
+    	<result column="goods" jdbcType="CHAR" property="goods" />
+    	<result column="attribute" jdbcType="CHAR" property="attribute" />
+    	<result column="proxyClient" jdbcType="CHAR" property="proxyclient" />
+    	<result column="currency" jdbcType="CHAR" property="currency" />
+    	<result column="crtAmount" jdbcType="CHAR" property="crtamount" />
+    	<result column="crtDate" jdbcType="CHAR" property="crtdate" />
+    	<result column="crtDeadline" jdbcType="INTEGER" property="crtdeadline" />
+    	<result column="state" jdbcType="CHAR" property="state" />
+  </resultMap>
+	<sql id="Base_Column_List">
+		id, contractId, bank, currency, payAmount, days, week, payDate, registerDate, lockAmount, lockRate, state
+	</sql>
+	
+	<select id="listAllAccept" resultMap="BaseResultMap">
+  		select * from accept
+    </select>
+    <select id="listAllAcceptByDate" resultMap="BaseResultMap">
+    	select * from accept where payDate = #{0} or payDate = #{1}
+    </select>
+    <select id="selectByFilter" parameterType="java.lang.String" resultMap="BaseResultMap">
+    	select * from accept 
+    	<where>
+    		<if test="!contractid.equals('default')">
+    			contractId like concat("%", #{contractid, jdbcType=CHAR}, "%") 
+    		</if>
+    		<if test="!bank.equals('default')">
+    			and bank = #{bank, jdbcType=CHAR}
+    		</if>
+    		<if test="!currency.equals('default')">
+    			and currency = #{currency, jdbcType=CHAR}
+    		</if>
+    		<if test="!paydate.equals('default')">
+    			and payDate like concat("%", #{paydate, jdbcType=CHAR}, "%") 
+    		</if>
+    		<if test="!registerdate.equals('default')">
+    			and registerDate like concat("%", #{registerdate, jdbcType=CHAR}, "%")
+    		</if>
+    		<if test="!payamount.equals('default')">
+    			and payAmount = #{payammount, jdbcType=CHAR}
+    		</if>
+    	</where>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap2">
+    	select 
+    	*
+    	from createBill
+    	where contractId = #{contractid,jdbcType=CHAR}
+    </select>
+    
+    <insert id="updateAcceptByKeySelective" parameterType="com.cn.link.model.CreateAccept">
+    	insert into accept
+    	<trim prefix="(" suffix=")" suffixOverrides=",">
+    		<if test="bank != null">
+    			bank,
+    		</if>
+    		<if test="contractid != null">
+    			contractId,
+    		</if>
+    		<if test="currency != null">
+    			currency,
+    		</if>
+    		<if test="payamount != null">
+    			payAmount,
+    		</if>
+    		<if test="days != null">
+    			days,
+    		</if>
+    		<if test="week != null">
+    			week,
+    		</if>
+    		<if test="paydate != null">
+    			payDate,
+    		</if>
+    		<if test="registerdate != null">
+    			registerDate,
+    		</if>
+    		<if test="lockamount != null">
+    			lockAmount,
+    		</if>
+    		<if test="lockamount != null">
+    			lockRate,
+    		</if>	
+				state
+			
+    	</trim>
+    	<trim prefix="values (" suffix=")" suffixOverrides=",">
+    		<if test="bank != null">
+    			#{bank, jdbcType=CHAR},
+    		</if>
+    		<if test="contractid != null">
+    			#{contractid, jdbcType=CHAR},
+    		</if>
+    		<if test="currency != null">
+    			#{currency, jdbcType=CHAR},
+    		</if>
+    		<if test="payamount != null">
+    			#{payamount, jdbcType=CHAR},
+    		</if>
+    		<if test="days != null">
+    			#{days, jdbcType= INTEGER},
+    		</if>
+    		<if test="week != null">
+    			#{week, jdbcType = CHAR},
+    		</if>
+    		<if test="paydate != null">
+    			#{paydate, jdbcType = CHAR},
+    		</if>
+    		<if test="registerdate != null">
+    			#{registerdate, jdbcType = CHAR},
+    		</if>
+    		<if test="lockamount != null">
+    			0,
+    		</if>
+    		<if test="lockrate != null">
+    			0,
+    		</if>
+    		"未押汇"
+    		
+    		
+    	</trim>
+    </insert>
+    
+    <update id="editAcceptByKeySelective" parameterType="com.cn.link.model.CreateAccept">
+    	update accept
+    	<set>
+    		<if test="contractid != null">
+    			contractId = #{contractid, jdbcType=CHAR},
+    		</if>
+    		<if test="bank != null">
+    			bank = #{bank, jdbcType=CHAR},
+    		</if>
+    		<if test="currency != null">
+    			currency = #{currency, jdbcType=CHAR},
+    		</if>
+    		<if test="payamount != null">
+    			payAmount = #{payamount, jdbcType=CHAR},
+    		</if>
+    		<if test="days != null">
+    			days = #{days, jdbcType= INTEGER},
+    		</if>
+    		<if test="week != null">
+    			week = #{week, jdbcType = CHAR},
+    		</if>
+    		<if test="paydate != null">
+    			payDate = #{paydate, jdbcType = CHAR},
+    		</if>
+    		<if test="registerdate != null">
+    			registerDate = #{registerdate, jdbcType = CHAR},
+    		</if>
+    		<if test="lockamount != null">
+    			lockAmount = #{lockamount, jdbcType = CHAR}, 
+    		</if>
+    		<if test="lockrate != null">
+    			lockRate = #{lockrate, jdbcType = CHAR}
+    		</if>
+    	</set>
+    	where id = #{id, jdbcType = INTEGER}
+    </update>
+    
+    <update id="updateLock">
+    	update accept set lockAmount = #{2}, lockRate = #{3} where id = #{0}
+    </update>
+    
+    <update id="updateAcceptState">
+    	update accept set state = '已押汇' where contractId = #{0}
+    </update>
+    
+    <select id="getInfoFromBillAndAccept" parameterType="String" resultMap="AcceptResultMap">
+  	  select * 
+  	  from accept left join createBill on accept.contractId = createBill.contractId
+  	  where accept.contractId=#{contractid,jdbcType=CHAR}
+    </select>
+    
+    <delete id="acceptDelete" parameterType="Integer">
+    	delete from accept where id = #{0}
+    </delete>
+    
+    <resultMap type="com.cn.link.model.CreateAccept" id="AcceptResultMap">
+	  	<id column="id" jdbcType="INTEGER" property="id"/>
+		<result column="contractId" jdbcType="CHAR" property="contractid"/>
+		<result column="bank" jdbcType="CHAR" property="bank"/>
+		<result column="currency" jdbcType="CHAR" property="currency"/>
+		<result column="payAmount" jdbcType="CHAR" property="payamount"/>
+		<result column="days" jdbcType="INTEGER" property="days"/>
+		<result column="week" jdbcType="CHAR" property="week"/>
+		<result column="payDate" jdbcType="CHAR" property="paydate"/>
+		<result column="registerDate" jdbcType="CHAR" property="registerdate"/>
+		<result column="lockAmount" jdbcType="CHAR" property="lockamount"/>
+		<result column="lockRate" jdbcType="CHAR" property="lockrate"/>
+		<result column="state" jdbcType="CHAR" property="state"/>
+	         <association property="bill" javaType="com.cn.link.model.CreateBill">
+	            <id column="id" jdbcType="INTEGER" property="id"/>
+				<result column="contractId" jdbcType="CHAR" property="contractid"/>
+			    <result column="bank" jdbcType="CHAR" property="bank" />
+			    <result column="dept" jdbcType="CHAR" property="dept" />
+			    <result column="goods" jdbcType="CHAR" property="goods" />
+			    <result column="attribute" jdbcType="CHAR" property="attribute" />
+			    <result column="proxyClient" jdbcType="CHAR" property="proxyclient" />
+			    <result column="currency" jdbcType="CHAR" property="currency" />
+			    <result column="crtAmount" jdbcType="CHAR" property="crtamount" />
+			    <result column="crtDate" jdbcType="CHAR" property="crtdate" />
+			    <result column="crtDeadline" jdbcType="INTEGER" property="crtdeadline" />
+			    <result column="state" jdbcType="CHAR" property="state" />
+	         </association>
+	  </resultMap>
+</mapper>

@@ -1,0 +1,56 @@
+<div >
+	<div >
+		<form ng-submit="addBill()">
+		合同号<input ng-model="bill.contractid"></br>
+		开证银行<input ng-model="bill.bank"></br>
+		部门<input ng-model="bill.dept"></br>
+		商品<input ng-model="bill.goods"></br>
+		性质<input ng-model="bill.attribute"></br>
+		代理客户<input ng-model="bill.proxyclient"></br>
+		币种<input ng-model="bill.currency"></br>
+		开证金额<input ng-model="bill.crtamount"></br>
+		开证日期<input ng-model="bill.crtdate"></br>
+		开证期限<input ng-model="bill.crtdeadline"></br>
+		状态<input ng-model="bill.state"></br>
+		<button type="submit">1.录入功能</button>
+		</form>
+	</div>
+	<br/>
+	<div ng-controller="crtCtrl">
+		合同号<input ng-model="contractid"></br>
+		<button ng-click="queryByContractId()">2.查找功能</button>
+	</div>
+	<br/>
+	<div>
+		<button ng-click="listAllBill()">3.查找所有信用证</button>
+	</div>	
+	<br/>
+	<div>
+		<button ng-click="updateStateByContractId()">4.审批</button>
+	</div>
+	<br/>
+		<div >
+		<form ng-submit="updateBill()">
+		合同号<input ng-model="bill.contractid"></br>
+		开证银行<input ng-model="bill.bank"></br>
+		部门<input ng-model="bill.dept"></br>
+		商品<input ng-model="bill.goods"></br>
+		性质<input ng-model="bill.attribute"></br>
+		代理客户<input ng-model="bill.proxyclient"></br>
+		币种<input ng-model="bill.currency"></br>
+		开证金额<input ng-model="bill.crtamount"></br>
+		开证日期<input ng-model="bill.crtdate"></br>
+		开证期限<input ng-model="bill.crtdeadline"></br>
+		<button type="submit">5.更改</button>
+		</form>
+	</div>
+	<div>
+		<button ng-click="updateStateByContractId2()">6.未审批</button>
+	</div>
+	<div>
+		<button ng-click="updateStateByContractId3()">6.未审批/审批</button>
+	</div>
+	<div>
+		<button ng-click="listAllCheckBill()">7.查找所有已经审批信用证</button>
+	</div>
+<div>

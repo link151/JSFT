@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="css/dashboard.css" type="text/css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet">
+    <link href="css/jsft.css" type="text/css" rel="stylesheet">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/jsft.js"></script>
+    <title>JSFT资金管理系统</title>
+</head>
+<body>
+<!--导航栏-->
+<!-- <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        Brand and toggle get grouped for better mobile display
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">JSTF资金管理系统</a>
+        </div>
+
+        Collect the nav links, forms, and other content for toggling
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="addCredit.html" class="dropdown-toggle" data-toggle="dropdown">信用证开立<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="addCredit.html">录入信用证</a></li>
+                        <li><a href="searchCredit.html">查看开立信用证</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">信用证承兑<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">录入承兑信息</a></li>
+                        <li><a href="#">查看承兑信用证</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">信用证押汇<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">录入押汇信息</a></li>
+                        <li><a href="#">查看押汇信用证</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin,你好<span class="caret"></span></a>
+                    <ul class="dropdown-menu " role="menu" style="min-width: 120px;">
+                        <li><a href="#" id="logout">退出系统</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>/.navbar-collapse
+    </div>/.container-fluid
+</nav> -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar" >
+            <ul class="nav nav-sidebar">
+                <li><label>信用证承兑</label></li>
+                <li id="inputAcceptNavSidebar" ng-hide="role != 'A'" class="active"><a href="#/addAcceptCredit">录入承兑信息</a></li>
+                <li id="checkAcceptNavSidebar"><a href="#/searchAcceptCredit">查看承兑信用证</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!--录用信用证表单-->
+            <div class="container" style="width: 100%;">
+                <h1>录入承兑信息</h1>
+                <form id="inputAcceptForm" class="form-horizontalm" role="form" onsubmit="">
+                    <div class="panel panel-default">
+                        <div class="row panel-body">
+                            <div id="searchContractNoDiv" class="form-group col-md-5">
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="searchContractNo" placeholder="请输入合同号" 
+                                    ng-model="contractid">
+                                </div>
+                                <div class="col-sm-4">
+                                    <button type="button" class="btn btn-default btn-block" ng-click="queryBillByContractIdAndState()">
+                                    	搜索</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form id="inputTradeForm" class="form-horizontalm" role="form"  ng-submit="updateAccept()"><!-- onsubmit="return submitAcceptCredit();" -->
+                    <div class="panel panel-default">
+                        <div class="panel-body row">
+                            <div id="inputBankDiv" class="form-group col-md-6">
+                                <label for="inputBank" class="col-sm-4 control-label">开证银行</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputBank" readonly="readonly" 
+                                    ng-model="accept.bank">
+                                </div>
+                            </div>
+                            <div id="inputCurrencyDiv" class="form-group col-md-6">
+                                <label for="inputCurrency" class="col-sm-4 control-label">货币种类</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputCurrency" readonly="readonly"
+                                    ng-model="accept.currency">
+                                </div>
+                            </div>
+                            <div id="inputContractNoDiv" class="form-group col-md-6">
+                                <label for="inputContractNo" class="col-sm-4 control-label">合同号</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputContractNo" readonly="readonly"
+                                    ng-model="accept.contractid">
+                                </div>
+                            </div>
+                            <!--付款金额要求千位分隔符,保留两位小数-->
+                            <div id="inputPaymentDiv" class="form-group col-md-6">
+                                <label for="inputPayment" class="col-sm-4 control-label">付款金额</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputPayment" placeholder="请输入付款金额"
+                                    ng-model="accept.payamount">
+                                </div>
+                            </div>
+                            <div id="inputDaysDiv" class="form-group col-md-6">
+                                <label for="inputDays" class="col-sm-4 control-label">天&nbsp;&nbsp;&nbsp;&nbsp;数</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control" id="inputDays" placeholder="请输入天数"
+                                    ng-model="accept.days">
+                                </div>
+                            </div>
+                            <div id="inputPaymentDateDiv" class="form-group col-md-6">
+                                <label for="inputPaymentDate" class="col-sm-4 control-label">付款日期</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group date form_date" data-date="" data-date-format="yyyy/mm/dd" data-link-field="inputPaymentDate" data-link-format="yyyy/mm/dd">
+                                        <input id="inputPaymentDateText" class="form-control" size="16" type="text" value="" onchange="setWeekday()" readonly="true"
+                                         ng-model="accept.paydate">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                    <input type="hidden" id="inputPaymentDate" value="" onchange="setWeekday()" /><br/>
+                                </div>
+                            </div>
+                            <div id="inputWeekdayDiv" class="form-group col-md-6">
+                                <label for="inputWeekday" class="col-sm-4 control-label">星&nbsp;&nbsp;&nbsp;&nbsp;期</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputWeekday" readonly="readonly"
+                                    ng-model="accept.week">
+                                </div>
+                            </div>
+                            <div id="inputRegisterDiv" class="form-group col-md-6">
+                                <label for="inputRegister" class="col-sm-4 control-label">登记日</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="inputRegister" readonly="readonly"
+                                    ng-model="accept.registerdate">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-offset-4 col-md-4" id="submitBtn">
+                                <button type="submit" class="btn btn-success btn-block btn-lg">确定</button>
+                            </div>
+                            <div class="form-group col-md-offset-4 col-md-4">
+                                <div id="creditSucMsg" class="alert alert-success alert-dismissible" style="display: none" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                    <strong id="creditNoSucMsg">信用证已承兑!</strong>
+                                </div>
+                                <div id="creditErrMsg" class="alert alert-danger" style="display: none" role="alert"><strong>请将表格信息填写完整,否则无法提交!</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!--尾部-->
+<!-- <div class="modal-footer left">
+    <p>&copy; Company</p>
+
+</div> -->
+<script type="text/javascript">
+    //var countSubmit = 0;
+    //sessionStorage.countSubmit = countSubmit;
+
+    $(document).ready(function(){
+        $('#inputPaymentDate').val(getNowFormatDate());
+        $('#inputPaymentDateText').val(getNowFormatDate());
+        $('#inputRegister').val(getNowFormatDate());
+
+        var weekday = getWeekday(getNowFormatDate());
+        $('#inputWeekday').val(weekday);
+        //$('#inputweekday').val();
+
+        $('#creditSucMsg').hide();
+        $('#creditErrMsg').hide();
+
+
+           /* $('#inputPaymentDate').bind('input onpropertychange',function () {
+                var date = $('#inputPaymentDate').val();
+                var weekday = getWeekday(date);
+                $('#inputDays').val(weekday);
+            }) */
+
+    });
+
+
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "/";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+      	if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        } 
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    }
+
+    function strToTime(timeStr) {
+        var seperator1 = "/";
+        if(timeStr){
+            var str = timeStr.split(seperator1);
+            if (3 === str.length){
+                var year = parseInt(str[0]);
+                var month = parseInt(str[1])-1;
+                var date = parseInt(str[2]);
+                var time = new Date(year,month,date);
+                return time;
+            }
+        }
+    }
+
+    function getWeekday(timeStr) {
+        var show_day = new Array('星期日','星期一','星期二','星期三','星期四','星期五','星期六','星期日');
+        var datetime = strToTime(timeStr);
+        var day = datetime.getDay();
+        return show_day[day];
+    }
+
+    function setWeekday() {
+        var date = $('#inputPaymentDate').val();
+        var weekday = getWeekday(date);
+        $('#inputWeekday').val(weekday);
+
+
+    }
+
+
+
+    function submitAcceptCredit() {
+        var payment = $('#inputPayment').val();
+        var days = $('#inputDays').val();
+        var paymentDate = $('#inputPaymentDate').val();
+
+
+        if (payment==''||days==''||paymentDate==''||!checkMoney(payment)){
+            $('#creditErrMsg').show();
+
+            if(payment==''){
+                //$('#creditErrMsg').show();
+                $('#inputPaymentDiv').addClass("has-error");
+            }else if (checkMoney(payment)){
+                $('#inputPayment').val(payment);
+            }else {
+                $('#inputPaymentDiv').addClass("has-error");
+            }
+
+            if (days==''){
+                //$('#creditErrMsg').show();
+                $('#inputDaysDiv').addClass("has-error");
+            }else{
+                $('#inputDays').val(days);
+            }
+            if (paymentDate==''){
+                //$('#creditErrMsg').show();
+                $('#inputPaymentDateDiv').addClass("has-error");
+            } else {
+                $('#inputPaymentDate').val(paymentDate);
+                $('#inputDays').val(getWeekday(paymentDate));
+            }
+        }else {
+            $('#inputAcceptForm').reset();
+            //$('#creditErrMsg').hide();
+            //var msg = contractNo+"信用证已开立!";
+            // $('#creditNoSucMsg').html(msg);
+            //$('#creditSucMsg').show();
+            //$('#inputAcceptForm').reset(msg);
+        }
+        return false;
+    }
+
+
+    $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    });
+
+</script>
+
+</body>
+</html>

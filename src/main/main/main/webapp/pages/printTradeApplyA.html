@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="css/dashboard.css" type="text/css" rel="stylesheet">
+    <link href="css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet">
+    <link href="css/jsft.css" type="text/css" rel="stylesheet">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/jsft.js"></script>
+    <title>JSFT资金管理系统</title>
+</head>
+<style >
+	.background{
+		background-image:none;
+		background-color:#FFFFFF;
+	}
+</style>
+<body class="background" ng-controller='billOfDraftCtrl'>
+
+<div class="container-fluid hidden-print printBtn">
+    <div class="row">
+    	<div class="form-group col-md-offset-4 col-md-4">
+            <button type="button" class="btn btn-success btn-block btn-lg" ng-click="print()">打印</button>
+        </div>
+    </div>
+</div>
+
+<TABLE style="WIDTH: 95%" cellSpacing="0" cellPadding="0" border="0" align="center">
+    <TR>
+        <TD style="HEIGHT: 85px" vAlign="middle" align="center" colSpan="4">
+            <span id="lbltitle"><b><font face="仿宋_GB2312" size="5">财务部办理进口押汇申请表</font></b></span>
+        </TD>
+    </TR>
+    <TR>
+        <TD align="left" colSpan="2"><FONT face="宋体">&nbsp;&nbsp;&nbsp;&nbsp; </FONT>
+            <span id="lblskrq"><b><font size="4">日期：{{printDate}}</font></b></span>
+        </TD>
+        <TD align="right" colSpan="2"><FONT face="宋体">&nbsp;&nbsp;&nbsp;&nbsp; </FONT>
+            <!-- <span id="lblskrq"><b><font size="4">编号：<span id="certificate">{{certificate}}</span></font></b></span> -->
+            <span id="lblskrq"><b><font size="4">编号：<span id="inputNo">{{no}}</span></font></b></span>
+        </TD>
+
+    </TR>
+</TABLE>
+<TABLE id="Table2" cellSpacing="0" cellPadding="0" width="95%" align="center" border="0">
+    <TR>
+        <TD vAlign="top" colspan="12">
+            <table class="GridBackColor" cellspacing="0" rules="all" bordercolor="#999999" border="1" id="DataGrid1" bgcolor="#F0F0E8" width="100%">
+                <tr nowrap="nowrap" align="left">
+                    <td colspan="2" class="title-sm-left">开证银行</td>
+                    <td colspan="4" class="content" width="25%">{{bank}}</td>
+                    <td colspan="2" class="title-sm">到期日</td>
+                    <td colspan="4" class="content" width="35%">{{loandate}}</td>
+                </tr>
+                <tr nowrap="nowrap" align="left">
+                    <td colspan="2"  class="title-sm-left">合同号</td>
+                    <td colspan="4" class="content">{{contractid}}</td>
+                    <td colspan="2" class="title-sm">押汇利率%</td>
+                    <td colspan="1" width="" class="content">{{draftrate}}%</td>
+                    <td colspan="2" class="title-xs">币种</td>
+                    <td colspan="1" width="" class="content">{{currency}}</td>
+                </tr>
+                <tr nowrap="nowrap" align="left">
+                    <td colspan="2" class="title-sm-left">押汇期限</td>
+                    <td colspan="4" class="content">{{draftdeadline}}</td>
+                    <td colspan="2" class="title-sm">押汇金额</td>
+                    <td colspan="4" class="content">{{draftamount}}</td>
+                </tr>
+                <tr nowrap="nowrap" align="left">
+                    <td colspan="2" class="title-lg">财务部申请</td>
+                    <td colspan="10" class="content">{{financialdeptapply}} {{loandate}}</td>
+                </tr>
+                <tr nowrap="nowrap" align="left">
+                    <td colspan="2" class="title-lg">财务经理审批</td>
+                    <td colspan="10" class="content"></td>
+                </tr>
+                <tr nowrap="nowrap" align="left">
+                    <td colspan="2" class="title-lg">总经理审批</td>
+                    <td colspan="10" class="content"></td>
+                </tr>
+
+            </table>
+
+
+        </TD>
+    </TR>
+</TABLE>
+
+</body>
+</html>

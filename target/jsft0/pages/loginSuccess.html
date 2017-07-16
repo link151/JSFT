@@ -1,0 +1,293 @@
+<head>
+    <meta charset="UTF-8">
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="css/jsft.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.css" />
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap.min.js"></script>
+    <link href="css/bootstrap-table.min.css" type="text/css" rel="stylesheet">
+    <script src="js/jsft.js"></script>
+    <script src="js/framework/1.3.0.14/angular.js"></script>
+    <script src="js/framework/1.3.0.14/angular-route.js"></script>
+    <script src="js/framework/1.3.0.14/angular-animate.js"></script>
+    <script src="js/framework/1.3.0.14/angular-messages.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controller/controllers.js"></script>
+    <script src="js/controller/homeController.js"></script>
+    <script src="js/controller/crtController.js"></script>
+    <script src="js/controller/acceptController.js"></script>
+    <script src="js/controller/billOfDraftController.js"></script>
+    <script src="js/framework/bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table-zh-CN.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table-filter-control.js"></script>
+    <title>JSFT资金管理系统</title>
+</head>
+
+<div class="jumbotron" id="loginSuc">
+    <div class="container">
+        <h1 class = "h1">欢迎登录JSFT资金管理系统</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" id='div_table1'>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <h3 class="panel-title col-md-8">承兑到期提醒</h3>
+                            <a class="col-md-4 text-right" href="#/notice" onclick='showTable1Details()'>更多详情&gt&gt</a>
+                        </div>
+                    </div>
+                    <!-- <table class="table" id="table1">
+                        <thead>
+                        <tr>
+                            <th>合同号</th>
+                            <th>到期时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>16JSFT04Z0100</td>
+                            <td>2016/10/10</td>
+                        </tr>
+                        <tr>
+                            <td>16JSFT04Z0100</td>
+                            <td>2016/10/10</td>
+                        </tr>
+                        <tr>
+                            <td>16JSFT04Z0100</td>
+                            <td>2016/10/10</td>
+                        </tr>
+                        </tbody>
+                    </table> -->
+                    <table id="table1">   <!-- data-filter-control=true -->
+                    	<!-- <thead>
+                    		<tr>
+                    			<th data-field='contractid' data-sortable='true' data-filter-control='select'>合同号</th>
+                    			<th data-field='paydate' data-sortable='true'>付款日期</th>
+                    			<th data-field='currency' data-sortable='true' data-filter-control='select'>币种</th>
+                    			<th data-field='bank' data-sortable='true' data-filter-control='select'>银行</th>
+                    			<th data-field='days' data-sortable='true'>天数</th>
+                    			<th data-field='payamount' data-sortable='true'>付款金额</th>
+                    			<th data-field='registerdate' data-sortable='true'>注册日期</th>
+                    			<th data-field='lockamount' data-sortable='true'>锁汇日期</th>
+                    			<th data-field='lockrate' data-sortable='true'>汇率</th>
+                    			<th data-field='state' data-sortable='true'>是否锁汇</th>
+                    		</tr>
+                    	</thead> -->
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-6" id='div_table2'>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <h3 class="panel-title col-md-8">押汇到期提醒</h3>
+                            <a class="col-md-4 text-right" href="#/notice" onclick='showTable2Details()'>更多详情&gt&gt</a>
+                        </div>
+                    </div>
+                   <!--  <table class="table">
+                        <thead>
+                        <tr>
+                            <th>合同号</th>
+                            <th>到期时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>16JSFT04Z0099</td>
+                            <td>2016/10/11</td>
+                        </tr>
+                        <tr>
+                            <td>16JSFT04Z0099</td>
+                            <td>2016/10/11</td>
+                        </tr>
+                        <tr>
+                            <td>16JSFT04Z0099</td>
+                            <td>2016/10/11</td>
+                        </tr>
+                        </tbody>
+                    </table> -->
+                    <table id="table2"> <!-- data-filter-control=true -->
+                    	<!-- <thead>
+                    		<tr>
+                    			<th data-field='contractid' data-sortable='true' data-filter-control='select'>合同号</th>
+                    			<th data-field='refunddate' data-sortable='true'>还款日</th>
+                    			<th data-field='currency' data-sortable='true' data-filter-control='select'>币种</th>
+                    			<th data-field='bank' data-sortable='true' data-filter-control='select'>银行</th>
+                    			<th data-field='certificate' data-sortable='true'  data-filter-control='select'>凭证号</th>
+                    			<th data-field='draftamount' data-sortable='true'>押汇金额</th>
+                    			<th data-field='rmb' data-sortable='true'>折人民币元</th>
+                    			<th data-field='loandate' data-sortable='true'>贷款日</th>
+                    			<th data-field='draftrate' data-sortable='true'>押汇汇率</th>
+                    			<th data-field='lockamount' data-sortable='true'>锁汇日期</th>
+                    			<th data-field='lockrate' data-sortable='true'>汇率</th>
+                    		</tr>
+                    	</thead> -->
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#table1').bootstrapTable({
+			url: 'listAllAcceptByDate.do',
+    		method: 'get',
+    		toolbar: '#toolbar',
+    		striped: true,
+    		pagination: true,
+    		sortable: true,
+    		pageSize: 20,
+    		pageList: [10, 25, 50, 100],
+    		search: true,
+    		showColumns: true, // 开启自定义列显示功能
+    		showRefresh: true,
+    		showToggle: true,
+    		clickToSelect: true,
+    		showColumns: true,
+    		singleSelect: true,
+    		queryParams: 'queryParams',
+    		columns:[{
+    			field: 'contractid',
+    			title: '合同号',
+    			sortable: true	
+    		},{
+    			field: 'paydate',
+    			title: '付款日期',
+    			sortable: true
+    		},{field:'currency',
+    		   title: '币种',
+    		   sortable: true 
+    		},{field:'bank',
+    		   title: '银行',
+    		   sortable: true 
+    		},{field:'days',
+    		   title: '天数',
+    		   sortable: true 
+    		},{field:'payamount',
+    		   title: '付款金额',
+    		   sortable: true 
+    		},{field:'registerdate',
+    		   title: '注册日期',
+    		   sortable: true 
+    		},{field:'lockamount',
+    		   title: '锁汇金额',
+    		   sortable: true 
+    		},{field:'lockrate',
+    		   title: '汇率',
+    		   sortable: true 
+    		},{field:'state',
+    		   title: '是否锁汇',
+    		   sortable: true 
+    		},] 
+		});
+		$('#table1').bootstrapTable('hideColumn', 'currency');
+		$('#table1').bootstrapTable('hideColumn', 'bank');
+		$('#table1').bootstrapTable('hideColumn', 'days');
+		$('#table1').bootstrapTable('hideColumn', 'payamount');
+		$('#table1').bootstrapTable('hideColumn', 'registerdate');
+		$('#table1').bootstrapTable('hideColumn', 'lockamount');
+		$('#table1').bootstrapTable('hideColumn', 'lockrate');
+		$('#table1').bootstrapTable('hideColumn', 'state');
+		
+		$('#table2').bootstrapTable({
+			url: 'selectDraftNotice.do',
+    		method: 'get',
+    		toolbar: '#toolbar',
+    		striped: true,
+    		pagination: true,
+    		sortable: true,
+    		pageSize: 20,
+    		pageList: [10, 25, 50, 100],
+    		search: true,
+    		showColumns: true, // 开启自定义列显示功能
+    		showRefresh: true,
+    		showToggle: true,
+    		clickToSelect: true,
+    		showColumns: true,
+    		singleSelect: true,
+    		queryParams: 'queryParams',
+    		columns:[{
+    			field: 'contractid',
+    			title: '合同号',
+    			sortable: true	
+    		},{
+    			field: 'refunddate',
+    			title: '还款日',
+    			sortable: true
+    		},{
+    			field: 'bank',
+    			title: '银行',
+    			sortable: true
+    		},{
+    			field: 'certificate',
+    			title: '凭证号',
+    			sortable: true
+    		},{
+    			field: 'currency',
+    			title: '币种',
+    			sortable: true
+    		},{
+    			field: 'draftamount',
+    			title: '押汇金额',
+    			sortable: true
+    		},{
+    			field: 'rmb',
+    			title: '折人民币元',
+    			sortable: true
+    		},{
+    			field: 'loandate',
+    			title: '贷款日',
+    			sortable: true
+    		},{
+    			field: 'draftrate',
+    			title: '押汇汇率',
+    			sortable: true
+    		},{
+    			field: 'lockamount',
+    			title: '锁汇金额',
+    			sortable: true
+    		},{
+    			field: 'lockrate',
+    			title: '锁汇汇率',
+    			sortable: true
+    		}] 
+		});
+		$('#table2').bootstrapTable('hideColumn', 'currency');
+		$('#table2').bootstrapTable('hideColumn', 'bank');
+		$('#table2').bootstrapTable('hideColumn', 'certificate');
+		$('#table2').bootstrapTable('hideColumn', 'draftamount');
+		$('#table2').bootstrapTable('hideColumn', 'rmb');
+		$('#table2').bootstrapTable('hideColumn', 'lockamount');
+		$('#table2').bootstrapTable('hideColumn', 'lockrate');
+		$('#table2').bootstrapTable('hideColumn', 'loandate');
+		$('#table2').bootstrapTable('hideColumn', 'draftrate');
+	});
+	
+	function showTable1Details(){
+		$('#div_table1').attr('class', 'col-md-12');
+		$('#table1').bootstrapTable('showColumn', 'currency');
+		$('#table1').bootstrapTable('showColumn', 'bank');
+		$('#table1').bootstrapTable('showColumn', 'days');
+		$('#table1').bootstrapTable('showColumn', 'payamount');
+		$('#table1').bootstrapTable('showColumn', 'registerdate');
+		$('#table1').bootstrapTable('showColumn', 'lockamount');
+		$('#table1').bootstrapTable('showColumn', 'lockrate');
+		$('#table1').bootstrapTable('showColumn', 'state');
+	}
+	
+	function showTable2Details(){
+		$('#div_table2').attr('class', 'col-md-12');
+		$('#table2').bootstrapTable('showColumn', 'currency');
+		$('#table2').bootstrapTable('showColumn', 'bank');
+		$('#table2').bootstrapTable('showColumn', 'certificate');
+		$('#table2').bootstrapTable('showColumn', 'draftamount');
+		$('#table2').bootstrapTable('showColumn', 'rmb');
+		$('#table2').bootstrapTable('showColumn', 'lockamount');
+		$('#table2').bootstrapTable('showColumn', 'lockrate');
+		$('#table2').bootstrapTable('showColumn', 'loandate');
+		$('#table2').bootstrapTable('showColumn', 'draftrate');	}
+</script>

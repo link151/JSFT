@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN" ng-app="myApp" style="width: 100%;height:100%;">
+<head>
+    <meta charset="UTF-8">
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="css/dashboard.css" type="text/css" rel="stylesheet">
+    <link href="css/bootstrap-table.min.css">
+    <link href="css/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet">
+    <link href="css/jsft.css" type="text/css" rel="stylesheet">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/framework/1.3.0.14/angular.js"></script>
+    <script src="js/framework/1.3.0.14/angular.min.js"></script>
+    <script src="js/framework/1.3.0.14/angular-cookies.js"></script>
+    <script src="js/framework/1.3.0.14/angular-route.js"></script>
+    <script src="js/framework/1.3.0.14/angular-animate.js"></script>
+    <script src="js/framework/1.3.0.14/angular-messages.js"></script>
+    
+    <script src="js/framework/bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="js/framework/bootstrap/bootstrap.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table-zh-CN.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table-filter-control.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table-export.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    
+    <script src="js/jsft.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controller/homeController.js"></script>
+    <script src="js/controller/crtController.js"></script>
+    <script src="js/controller/acceptController.js"></script>
+    <script src="js/controller/billOfDraftController.js"></script>
+    <title>JSFT资金管理系统</title>
+</head>
+<body class="background">
+<!--导航栏-->
+<nav id="loginNav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">切换导航</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/">JSFT资金管理系统</a>
+                <input type="hidden" id="hid_deptId">
+			    <input type="hidden" id="hid_rate">
+			    <input type="hidden" id="id">
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a ng-href="#/addCredit" ng-click="reloadRoute()">信用证开立</a></li>
+                    <li><a ng-href="#/addAcceptCredit" ng-hide="role=='Y'" ng-click="reloadRoute()">信用证承兑</a></li>
+                    <li><a ng-href="#/billOfDraft" ng-click="reloadRoute()">信用证押汇</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" id="userMsg" ng-hide="username == null" ng-controller="homeCtrl">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{username}},你好<span class="caret"></span></a>
+                        <ul class="dropdown-menu " role="menu" style="min-width: 120px;">
+                            <li><a ng-click="logout()" href="#" id="logout">退出系统</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+    
+    <div ng-view >
+      
+    </div>
+
+
+<!-- <div id="footer" class="modal-footer left hidden-print" style="margin-top: 320px;">
+    <p>&copy; Company</p>
+    <input type="hidden" id="hid_deptId">
+    <input type="hidden" id="hid_rate">
+    <input type="hidden" id="id">
+</div>
+ -->
+
+
+<script>
+    $(document).ready(function () {
+        $('#loginForm').show();
+        /* $('#loginSuc').hide(); */
+        /* $('#userMsg').hide(); */
+        $('#loginError').hide();
+        //$('#loginBtn').click(function () {
+
+             //$('#userMsg').css("display",null);
+             //$('#loginForm').css("display","none");
+             //$('#loginSuc').css("display",null);
+             //$('#loginMsg').css("display",null);
+         //});
+    })
+
+/*     function submitClick() {
+        var userName= $('#inputUser').val();
+        var userPwd = $('#inputPassword').val();
+        if (userName=='' || userPwd==''){
+            $('#loginError').show();
+        }else{
+            $('#userMsg').show();
+            $('#loginForm').hide();
+            $('#loginSuc').show();
+            var height= $('#loginNav').outerHeight(true) + $('#loginSuc').outerHeight(true);
+            if (height > 850){
+                $('#footer').css("margin-top","30px");
+            }else{
+                var margin = 878-height;
+                var marginTop = margin+"px";
+                $('#footer').css("margin-top",marginTop)
+            }
+        }
+        return false;
+    } */
+
+</script>
+
+</body>
+</html>

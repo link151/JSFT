@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <head>
+    <meta charset="UTF-8">
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="css/dashboard.css" type="text/css" rel="stylesheet">
+    <link href="css/bootstrap-table.min.css" type="text/css" rel="stylesheet">
+    <link href="css/jsft.css" type="text/css" rel="stylesheet">
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table-zh-CN.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-table-filter-control.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.min.js"></script>
+    <script src="js/framework/bootstrap/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="js/jsft.js"></script>
+    <title>JSFT资金管理系统</title>
+</head>
+ 
+<body class="background">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar" ng-init="tab.activeTab=1">
+                <li><label>信用证开立</label></li>
+                <li id="inputCreditNavSidebar"><a href="#/addCredit">录入信用证</a></li>
+                <li id="listCreditNavSidebarCheck" class="active" ng-hide="role == 'Y'"><a href="#/listCheckCredit" ng-click="listAllCheckBill()">已审批信用证</a></li>
+                <li id="listCreditNavSidebarUnCheck" ng-hide="role == 'Y'"><a href="#/listUnCheckCredit" ng-click="listAllUnCheckBill()">未审批信用证</a></li>
+            </ul>
+            <input type="hidden" id="hid_contractId">
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!--信用证查询页面-->
+            <h1>所有信用证</h1>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div id="toolbar" class="btn-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-danger" style="width: 60px" ng-hide="role != 'A'"
+                                ng-click="updateBillStateRejectById()">驳回</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table id="table" data-filter-control="true">
+                        <thead>
+                        <tr>
+                            <th data-checkbox="true"></th>
+                            <th data-field="id" data-sortable="true">序号</th>
+                            <th data-field="bank" data-sortable="true" data-editable="true" data-filter-control="select">开证银行</th>
+                            <th data-field="dept" data-sortable="true" data-editable="true" data-filter-control="select">部门</th>
+                            <th data-field="goods" data-sortable="true" data-editable="true" data-filter-control="input">商品</th>
+                            <th data-field="contractid" data-sortable="true" data-editable="true" data-filter-control="input">合同号</th>
+                            <th data-field="attribute" data-sortable="true" data-editable="true">性质</th>
+                            <th data-field="proxyclient" data-sortable="true" data-editable="true">代理客户</th>
+                            <th data-field="currency" data-sortable="true" data-editable="true" data-filter-control="select">币种</th>
+                            <th data-field="crtamount" data-sortable="true" data-editable="true">开证金额</th>
+                            <th data-field="crtdate" data-sortable="true" data-editable="true" data-filter-control="input">开证日期</th>
+                            <th data-field="crtdeadline" data-sortable="true" data-editable="true">开证期限</th>
+                            <th data-field="state" data-sortable="true" data-editable="true">合同状态</th>
+                        </tr>
+                        </thead>
+                    </table>
+                    <!--nav style="text-align: center">
+                        <ul class="pagination">
+                            <li><a href="#">&laquo;</a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">&raquo;</a></li>
+                        </ul>
+                    </nav-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+$(function(){
+	$('#table').bootstrapTable({
+		url: 'listAllCheckBill.do',
+		method: 'get',
+		toolbar: '#toolbar',
+		striped: true,
+		pagination: true,
+		sortable: true,
+		pageSize: 15,
+		pageList: [10, 15, 25, 50, 100],
+		search: true,
+		showRefresh: true,
+		showToggle: true,
+		clickToSelect: true,
+		showColumns: true,
+		/* singleSelect: true, */
+		queryParams: 'queryParams',
+	});
+	$('#table').bootstrapTable('hideColumn', 'id');
+});
+
+$('.form_date').datetimepicker({
+    language:  'zh-CN',
+    weekStart: 1,
+    todayBtn:  1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0
+});
+</script>
+</body>
+</html>

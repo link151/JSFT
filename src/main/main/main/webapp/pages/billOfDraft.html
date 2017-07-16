@@ -1,0 +1,16 @@
+<div>
+	<button ng-click="listAllDraftOrderByBank()">信用证押汇列表</button>
+</div>
+<div>
+	合同号<input type="text" ng-model="draft.contractid">
+	凭证号<input type="text" ng-model="draft.certificate">
+	<button ng-click="updateDraftByContractId()">补录信用证押汇（更新）</button>
+</div>
+<div>
+	合同号<input type="text" ng-model="draft.contractid">
+	<button ng-click="queryByContractId()">根据合同号查询信用证押汇</button>
+</div>
+<div>
+	合同号<input type="text" ng-model="draft.contractid">
+	<button ng-click="addDraft()">新增信用证押汇</button>
+</div>

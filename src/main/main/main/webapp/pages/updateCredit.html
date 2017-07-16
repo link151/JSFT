@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<body class="background">
+<!--导航栏-->
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar" ng-init="tab.activeTab=1">
+                <li><label>信用证开立</label></li>
+                <li id="inputCreditNavSidebar" ><a href="#/addCredit">录入信用证</a></li>
+                <li id="listCreditNavSidebarCheck" ng-hide="role == 'Y'"><a href="#/listCheckCredit" ng-click="listAllCheckBill()">已审批信用证</a></li>
+                <li id="listCreditNavSidebarUnCheck" ng-hide="role == 'Y'"><a href="#/listUnCheckCredit" ng-click="listAllUnCheckBill()">未审批信用证</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <!--录用信用证表单-->
+            <h1>修改信用证</h1>
+<!--             <form id="searchContractForm" class="form-horizontalm" role="form">
+                <div class="panel panel-default">
+                    <div class="row panel-body">
+                        <div id="searchContractNoDiv" class="form-group col-md-5">
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="searchContractNo" placeholder="请输入合同号">
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-default btn-block" ng-click="queryByContractIdAndState()">搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form> -->
+            <form class="form-horizontalm" role="form" >
+                <div class="panel panel-default" style="padding-bottom: 190px">
+                    <div class="panel-body row">
+                    	<!-- <div id="searchError" class="alert alert-danger col-sm-offset-2 col-sm-8" role="alert">
+                    		<strong>满足条件的合同号不存在！</strong>
+                    	</div> -->
+                    	<div class="form-group col-md-6">
+                            <label for="inputContractNo" class="col-sm-4 control-label">合同号</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputContractNo" placeholder="请输入合同号" 
+                                	ng-model="bill.contractid" readonly="readonly">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputBank" class="col-sm-4 control-label">开证银行</label>
+                            <div class="col-sm-8">
+                                <select id="inputBank" class="form-control" ng-model="bill.bank" required="required">
+                                    <option value="0">请选择开证银行</option>
+                                    <option value="交通银行">交通银行</option>
+                                    <option value="建设银行">建设银行</option>
+                                    <option value="招商银行">招商银行</option>
+                                    <option value="广发银行">广发银行</option>
+                                    <option value="浦发银行">浦发银行</option>
+                                    <option value="南京银行">南京银行</option>
+                                    <option value="工商银行">工商银行</option>
+                                    <option value="民生银行">民生银行</option>
+                                    <option value="华夏银行">华夏银行</option>
+                                    <option value="浙江银行">浙江银行</option>
+                                    <option value="平安银行">平安银行</option>
+                                    <option value="苏州银行">苏州银行</option>
+                                    <option value="紫金农商银行">紫金农商银行</option>
+                                    <option value="首都银行">首都银行</option>
+                                    <option value="恒生银行">恒生银行</option>
+                                    <option value="兴业银行">兴业银行</option>
+                                    <option value="江苏银行">江苏银行</option>
+                                    <option value="宁波银行">宁波银行</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputDepart" class="col-sm-4 control-label">部&nbsp;&nbsp;&nbsp;&nbsp;门</label>
+                            <div class="col-sm-8">
+                                <select id="inputDepart" class="form-control" ng-model="bill.dept" required="required">
+                                    <option value="0" selected="selected">请选择部门</option>
+                                    <option value="200财务部">200财务部</option>
+                                    <option value="201金属矿产部">201金属矿产部</option>
+                                    <option value="202木材部">202木材部</option>
+                                    <option value="203纺织原料部">203纺织原料部</option>
+                                    <option value="204浆纸原料部">204浆纸原料部</option>
+                                    <option value="205金属建材部">205金属建材部</option>
+                                    <option value="206化工一部">206化工一部</option>
+                                    <option value="207化工原料部">207化工原料部</option>
+                                    <option value="209化工六部">209化工六部</option>
+                                    <option value="219化工四部">219化工四部</option>
+                                    <option value="224轻纺出口部">224轻纺出口部</option>
+                                    <option value="227金属部">227金属部</option>
+                                    <option value="228船舶事业部">228船舶事业部</option>
+                                    <option value="229贸易发展三部">229贸易发展三部</option>
+                                    <option value="230金属事业部">230金属事业部</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputCommodity" class="col-sm-4 control-label">商品类型</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputCommodity" placeholder="请输入商品类型" ng-model="bill.goods" required="required">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group col-md-6">
+                            <label for="inputNature" class="col-sm-4 control-label">性质</label>
+                            <div class="col-sm-8">
+                                <select id="inputNature" class="form-control" ng-model="bill.attribute" required="required">
+                                    <option value="0">请选择性质</option>
+                                    <option value="自营">自营</option>
+                                    <option value="代理">代理</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputCustomer" class="col-sm-4 control-label">代理客户</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputCustomer" ng-disabled="bill.attribute == '自营'"
+                                placeholder="请输入代理客户" ng-model="bill.proxyclient">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputCurrency" class="col-sm-4 control-label">货币种类</label>
+                            <div class="col-sm-8">
+                                <select id="inputCurrency" class="form-control" ng-model="bill.currency" required="required">
+                                    <option value="0">请选择货币种类</option>
+                                    <option value="人民币CNY">人民币CNY</option>
+                                    <option value="美元USD">美元USD</option>
+                                    <option value="欧元EUR">欧元EUR</option>
+                                    <option value="日元JPY">日元JPY</option>
+                                    <option value="加拿大元CAD">加拿大元CAD</option>
+                                    <option value="新加坡元SGD">新加坡元SGD</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputSum" class="col-sm-4 control-label">开证金额</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputSum" placeholder="请输入开证金额" 
+                                	ng-model="bill.crtamount" required="required" ng-change = "changeSum()">
+                            </div>
+                        </div>
+                        <!-- <div class="form-group col-md-6">
+                            <label for="inputDate" class="col-sm-4 control-label">开证日期</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="inputDate" placeholder="请输入开证日期" ng-model="bill.crtdate">
+                            </div>
+                        </div> -->
+                        
+                        <div id="inputDateDiv" class="form-group col-md-6">
+                                <label for="inputDate" class="col-sm-4 control-label">开证日期</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group date form_date" data-date="" data-date-format="yyyy-mm-dd" data-link-field="inputDate" data-link-format="yyyy-mm-dd">
+                                        <input id="inputDateText" class="form-control" size="16" type="date" value="" readonly required="required">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                    <input ng-model="bill.crtdate" type="hidden" id="inputDate" value="" /><br/>
+                                </div>
+                            </div>
+                        
+                        <div class="form-group col-md-6">
+                            <label for="inputTime" class="col-sm-4 control-label">开证期限</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="inputTime" placeholder="请输入开证期限" ng-model="bill.crtdeadline" required="required">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4"></div>
+                        <div class="form-group col-md-4" id="submitBtn">
+                            <button type="submit" class="btn btn-success btn-block btn-lg" ng-click="updateBill()"
+                            id="confirmBtn" data-load-text="修改中…" autocomplete="off">确认修改</button>
+                        </div>
+                        <div class="form-group col-md-4"></div>
+
+                    </div>
+
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var countSubmit = 0;
+    sessionStorage.countSubmit = countSubmit;
+
+/*     $(document).ready(function(){
+        $('#inputDate').val(getNowFormatDate());
+        $('#inputDateText').val(getNowFormatDate());
+    }); */
+
+
+/*     function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = year + seperator1 + month + seperator1 + strDate;
+        return currentdate;
+    } */
+
+/*     $('.form_date').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
+    }); */
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html ng-app="myApp" >
+<head>
+    <meta charset="UTF-8">
+    <title>JSFT</title>
+    <script src="js/framework/1.3.0.14/angular.js"></script>
+    <script src="js/framework/1.3.0.14/angular-route.js"></script>
+    <script src="js/framework/1.3.0.14/angular-animate.js"></script>
+    <script src="js/framework/1.3.0.14/angular-messages.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/controllers/controllers.js"></script>
+
+    <script src="//cdn.bootcss.com/angular-file-upload/2.3.3/angular-file-upload.js"></script>
+    <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+    <script src="js/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- bootstrap -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.js"></script>
+    <script src="js/framework/bootstrap/ui-bootstrap-tpls.js"></script>
+    
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.css" />
+</head>
+<body>
+    <div class="wrap " >
+      <nav class="navbar nav-bar-fixed-top" role="navigation">
+              
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" 
+                        data-target="#navs">
+                        <span class="sr-only">切换导航</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#/" class="navbar-brand">
+                          <!--<img src="images/logo.jpg" alt="" class="logo">-->
+                          JSFT
+                    </a> 
+                </div>
+                <div class="collapse navbar-collapse " id="navs" >
+                  <ul class="navbar-right nav navbar-nav">
+                        <li><a ng-href="#/aboutus" >关于我们</a></li>
+                        <li><a ng-href="#/home" >主页</a></li>
+                  </ul>
+                </div>
+      </nav>
+      <div ng-view >
+        
+      </div>
+      
+      <footer>
+          <p>@2016 , JSFT</p>
+      </footer>
+      </div>
+    
+</body>
+</html>
